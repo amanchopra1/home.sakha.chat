@@ -7,7 +7,7 @@ module.exports = async (req, res) => {
     const response = await axios.post(
       'https://api.openai.com/v1/chat/completions',
       {
-        model: 'ft:gpt-3.5-turbo-1106:personal::8Ub6IuEP', // Adjusted model to match the previous example
+        model: 'gpt-3.5-turbo', // Adjusted model to match the previous example
         messages: [
           { role: 'system', content: 'You are a spritual assistant.' },
           { role: 'user', content: prompt }
