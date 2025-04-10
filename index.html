@@ -1006,22 +1006,24 @@
         userInput.value = `Tell me about ${topic}`;
         sendMessage();
     }
-
-    async function getAIResponse(prompt) {
-        try {
-             const response = await fetch('/api/chat', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ prompt }),
-            });
-            const data = await response.json();
-            return data.choices && data.choices[0] && data.choices[0].message ? data.choices[0].message.content : "Sorry, I couldn't process that. Could you ask differently?";
-        } catch (error) {
-            return `Error: ${error.message}`;
-        }
+async function getAIResponse(prompt) {
+    try {
+        const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ prompt }),
+        });
+        const data = await response.json();
+        const botResponse = data?.message?.response?.candidates?.[0]?.content?.parts?.[0]?.text 
+            || "Sorry, I couldn't process that. Could you ask differently?";
+        return botResponse;
+    } catch (error) {
+        return `Error: ${error.message}`;
     }
+}
+
 
     function sendMessage() {
         const userInput = document.getElementById('userInput');
