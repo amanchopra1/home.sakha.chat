@@ -3,9 +3,8 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 // Configure Gemini API
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-// Enhanced system prompt for spiritual assistant with memory capabilities
+// True system prompt for Sakha
 const SPIRITUAL_INSTRUCTIONS = `
-
 You are Sakha, a spiritual guide deeply versed in Vedic wisdom and philosophy. Follow these instructions precisely:
 
 # CORE IDENTITY
@@ -23,7 +22,7 @@ You are Sakha, a spiritual guide deeply versed in Vedic wisdom and philosophy. F
 - Maintain a conversational, warm, and accessible tone while preserving spiritual depth
 - Ask thoughtful questions to better understand the seeker's spiritual needs
 - Reference relevant spiritual teachings when appropriate
-- When appropriate, refer to previous conversations to provide continuity and personalization 
+- When appropriate, refer to previous conversations to provide continuity and personalization
 - Remember details shared by the user and use them to provide more personalized guidance
 
 # COMMUNICATION STYLE
@@ -55,7 +54,6 @@ You are Sakha, a spiritual guide deeply versed in Vedic wisdom and philosophy. F
 - Never claim to have specific powers or abilities beyond wisdom and guidance
 - Never make promises about specific outcomes from spiritual practices
 - Never fabricate memories of conversations that didn't happen
--Never Halucinate , be specfic to what user has asked 
 
 # RESPONSE FRAMEWORK
 1. Begin with "Hare Krishna" or "Hare Bol"
@@ -64,98 +62,71 @@ You are Sakha, a spiritual guide deeply versed in Vedic wisdom and philosophy. F
 4. Include practical guidance when appropriate
 5. Incorporate appropriate Sanskrit terms where natural
 6. End with an encouraging thought or question for reflection
-
-Always maintain the essence of spiritual wisdom while being accessible and supportive to seekers at any stage of their journey..
-
 `;
 
-// In-memory chat history storage (in production, use a database)
+// In-memory chat history storage (in production, use a real DB)
 const chatHistories = new Map();
 
-export const maxDuration = 60; // Extend max duration to 60 seconds
+export const maxDuration = 60;
 
 export async function POST(req) {
   try {
-    // Parse the JSON body from the request
     const { prompt, sessionId, chatHistory } = await req.json();
-
-    // Validate the prompt field
     if (!prompt) {
       return new Response(
-        JSON.stringify({ error: "The 'prompt' field is required in the request body." }),
+        JSON.stringify({ error: "The 'prompt' field is required." }),
         { status: 400, headers: { "Content-Type": "application/json" } }
       );
     }
 
-    // Initialize the Gemini model with generation configurations
+    // 1. Initialize the finetuned model with tight sampling & repetition penalty
     const model = genAI.getGenerativeModel({
-   model: "tunedModels/sakha-i8ehrirsufxc",
-  generationConfig: {
-    systemInstruction: SPIRITUAL_INSTRUCTIONS,
-    prefixMessages: [
-      { role: "user",  content: "hi" },
-      { role: "model", content: "Hare Krishna! I am Sakha, your spiritual guide. How may I assist you on your path today?" }
-    ],
-    temperature: 0.2,
-    topP: 0.6,
-    topK: 20,
-    repetitionPenalty: 1.2,
-    maxOutputTokens: 8192,
+      model: "tunedModels/sakha-i8ehrirsufxc",
+      generationConfig: {
+        temperature: 0.2,
+        topP: 0.6,
+        topK: 20,
+     
+        maxOutputTokens: 8192,
       },
     });
 
-    // Get or initialize chat history
+    // 2. Build or retrieve conversation history
     let history = [];
-
     if (sessionId && chatHistories.has(sessionId)) {
-      // Use existing chat history if available
       history = chatHistories.get(sessionId);
-    } else if (chatHistory && Array.isArray(chatHistory) && chatHistory.length > 0) {
-      // Use provided chat history from client
-      history = [
-        { role: "user", parts: [{ text: SPIRITUAL_INSTRUCTIONS }] },
-        { role: "model", parts: [{ text: "I understand my role as Sakha, a spiritual guide. I will follow all the instructions, begin each response with 'Hare Krishna' or 'Hare Bol', respond appropriately to greetings, and incorporate Sanskrit terms where appropriate. I will provide relevant, focused responses to all questions." }] },
-        ...chatHistory
-      ];
-    } else {
-      // Initialize new chat history with system instructions
-      history = [
-        { role: "user", parts: [{ text: SPIRITUAL_INSTRUCTIONS }] },
-        { role: "model", parts: [{ text: "I understand my role as Sakha, a spiritual guide. I will follow all the instructions, begin each response with 'Hare Krishna' or 'Hare Bol', respond appropriately to greetings, and incorporate Sanskrit terms where appropriate. I will provide relevant, focused responses to all questions." }] }
-      ];
+    } else if (Array.isArray(chatHistory) && chatHistory.length) {
+      history = chatHistory;
     }
 
-    // Start a chat session with the provided conversation history
-    const chat = model.startChat({ history });
-
-    // Get a response from the Gemini AI model
-    const result = await chat.sendMessage(prompt);
-
-    // Update chat history with the new exchange
-    history.push({ role: "user", parts: [{ text: prompt }] });
-    history.push({
-      role: "model",
-      parts: [{ text: result.response.candidates[0].content.parts[0].text }]
+    // 3. Start chat with systemInstruction & prefixMessages to lock persona
+    const chat = model.startChat({
+      systemInstruction: SPIRITUAL_INSTRUCTIONS,
+      prefixMessages: [
+        { role: "user",  content: "hi" },
+        { role: "model", content: "Hare Krishna! I am Sakha, your spiritual guide. How may I assist you on your path today?" }
+      ],
+      history
     });
 
-    // Store updated chat history if sessionId is provided
-    if (sessionId) {
-      chatHistories.set(sessionId, history);
-    }
+    // 4. Send the user’s prompt and get a response
+    const result = await chat.sendMessage(prompt);
 
-    // Return the AI response as JSON with updated chat history
+    // 5. Update history & optionally store it
+    const reply = result.response.candidates[0].content.parts[0].text;
+    history.push({ role: "user",  content: prompt });
+    history.push({ role: "model", content: reply });
+
+    if (sessionId) chatHistories.set(sessionId, history);
+
+    // 6. Return the reply
     return new Response(
-      JSON.stringify({
-        message: result,
-        chatHistory: history.slice(2) // Remove system instructions from returned history
-      }),
+      JSON.stringify({ reply, chatHistory: history }),
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
-
+    
   } catch (error) {
-    console.error("Error in chat API:", error);
-
-    // Return error response
+    console.error("Chat API error:", error);
     return new Response(
       JSON.stringify({ error: error.message }),
       { status: 500, headers: { "Content-Type": "application/json" } }
