@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "main": "api/chat.js",
   "dependencies": {
-    "axios": "^0.21.1"
+    "axios": "^0.21.1",
+    "@google/generative-ai": "^0.3.0"
+    
+
+    
   }
 }
