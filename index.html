@@ -1,8 +1,8 @@
-
+ 
 <html>
 
 <head>
-
+ 
   <title>Sakha - Your Spiritual Friend</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
@@ -28,7 +28,7 @@
       display: flex;
       flex-direction: column;
       overflow-x: hidden
-
+      
     }
 
     .container {
@@ -154,7 +154,7 @@
       word-wrap: break-word;
       overflow-wrap: break-word;
       position: relative
-
+     
     }
 
     @keyframes fadeIn {
@@ -182,7 +182,7 @@
       transform: translateY(10px);
       animation: wordAppear 0.3s forwards;
       margin-right: 4px
-
+      
     }
 
     @keyframes wordAppear {
@@ -196,7 +196,7 @@
       position: absolute;
       bottom: -10px;
       right: 0;
-
+      
       display: none;
       background-color: rgba(255, 255, 255, 0.9);
       border-radius: 15px;
@@ -217,7 +217,7 @@
       font-size: 16px;
       color: var(--primary-color);
       transition: all 0.3s ease
-
+      
     }
 
     .message-action:hover {
@@ -450,7 +450,7 @@
       flex-direction: column;
       align-items: center;
       transition: all 0.3s ease;
-
+      
       z-index: 99999;
     }
 
@@ -465,7 +465,7 @@
     .nav-item i {
       font-size: 1.2rem;
       margin-bottom: 3px
-
+      
     }
 
     .spiritual-particles {
@@ -531,7 +531,7 @@
       background: none;
       border: none;
       cursor: pointer
-
+      
     }
 
     .info-section {
@@ -763,43 +763,6 @@
       color: var(--text-color)
     }
 
-    .history-item-time {
-      font-size: 0.8rem;
-      color: #888;
-      text-align: right;
-      margin-top: 5px;
-    }
-
-    .history-date-header {
-      font-weight: bold;
-      color: var(--primary-color);
-      margin: 15px 0 10px 0;
-      padding-bottom: 5px;
-      border-bottom: 1px solid #eee;
-    }
-
-    .history-actions {
-      display: flex;
-      justify-content: center;
-      margin: 10px 0;
-    }
-
-    .clear-history-button {
-      background-color: #f44336;
-      color: white;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 0.9rem;
-      transition: all 0.3s ease;
-    }
-
-    .clear-history-button:hover {
-      background-color: #d32f2f;
-      transform: scale(1.05);
-    }
-
     @media (min-width: 768px) {
 
       .notification-panel,
@@ -907,7 +870,7 @@
     </div>
   </div><nav class="navigation"><a href="https://home.sakha.chat" class="nav-item nav-active"><i class="fas fa-home"></i><span>Home</span></a><a href="https://vedic.sakha.chat" class="nav-item"><i class="fas fa-book"></i><span>Books</span></a><a href="https://home.sakha.chat/chant.html" class="nav-item"><i class="fas fa-om"></i><span>Chanting</span></a><a href="https://gita.sakha.chat" class="nav-item"><i class="fas fa-leaf"></i><span>Remedies</span></a>
 
-    <a href="https://rzp.io/l/sakha" class="nav-item"><i class="fas fa-hand-holding-heart"></i><span>contribute</span></a></nav>
+    <a href="./our-team.html" class="nav-item"><i class="fas fa-users"></i><span>Our Team</span></a></nav>
   <div class="notification-icon" onclick="toggleNotifications()" data-count="3"><i class="fas fa-bell"></i></div>
   <div class="notification-panel" id="notificationPanel">
     <div class="notification-panel-header">
@@ -966,10 +929,18 @@
     <div class="history-panel-header">
       <h2 class="history-panel-title">Conversation History</h2><button class="close-history-panel" onclick="toggleHistory()"><i class="fas fa-times"></i></button>
     </div>
-    <div class="history-actions">
-      <button class="clear-history-button" onclick="clearChatHistory()"><i class="fas fa-trash"></i> Clear History</button>
+    <div class="history-item">
+      <div class="history-item-title">Meditation Techniques</div>
+      <div class="history-item-content">Discussion about various meditation techniques and their benefits.</div>
     </div>
-    <!-- Chat history will be dynamically populated here -->
+    <div class="history-item">
+      <div class="history-item-title">Understanding Karma</div>
+      <div class="history-item-content">Exploring the concept of karma and its impact on our lives.</div>
+    </div>
+    <div class="history-item">
+      <div class="history-item-title">Bhagavad Gita Insights</div>
+      <div class="history-item-content">Key teachings from the Bhagavad Gita and their modern applications.</div>
+    </div>
   </div>
   <div class="chanting-overlay" id="chantingOverlay">
     <h1>Hare Krishna</h1><button class="close-overlay" onclick="closeChantingOverlay()"><i class="fas fa-times"></i></button>
@@ -987,7 +958,7 @@
     function typeWriter() {
       const welcomeMessage = document.getElementById('welcomeMessage');
       const currentMessage = welcomeMessages[currentMessageIndex];
-
+    
       if (isDeleting) {
         welcomeMessage.textContent = currentMessage.substring(0, currentCharIndex - 1);
         currentCharIndex--;
@@ -995,11 +966,11 @@
         welcomeMessage.textContent = currentMessage.substring(0, currentCharIndex + 1);
         currentCharIndex++;
       }
-
+    
       if (!isDeleting && currentCharIndex === currentMessage.length) {
         isDeleting = true;
         typingSpeed = 50;
-
+    
         // Add a 2-second pause before starting to delete
         setTimeout(() => {
           isDeleting = true;
@@ -1011,7 +982,7 @@
         currentMessageIndex = (currentMessageIndex + 1) % welcomeMessages.length;
         typingSpeed = 0;
       }
-
+    
       const randomSpeed = Math.random() * 50 + 50;
       setTimeout(typeWriter, isDeleting ? typingSpeed : randomSpeed);
     }
@@ -1035,126 +1006,18 @@
         userInput.value = `Tell me about ${topic}`;
         sendMessage();
     }
-// Generate a unique session ID for this user if not already present
-function getSessionId() {
-    let sessionId = localStorage.getItem('sakha_session_id');
-    if (!sessionId) {
-        sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substring(2, 15);
-        localStorage.setItem('sakha_session_id', sessionId);
-    }
-    return sessionId;
-}
-
-// Get chat history from local storage
-function getChatHistory() {
-    const chatHistory = localStorage.getItem('sakha_chat_history');
-    return chatHistory ? JSON.parse(chatHistory) : [];
-}
-
-// Save chat history to local storage
-function saveChatHistory(history) {
-    localStorage.setItem('sakha_chat_history', JSON.stringify(history));
-    updateHistoryPanel(history);
-}
-
-// Update the history panel with actual conversation history
-function updateHistoryPanel(history) {
-    const historyPanel = document.getElementById('historyPanel');
-
-    // Clear existing history items except the header and actions
-    const header = historyPanel.querySelector('.history-panel-header');
-    const actions = historyPanel.querySelector('.history-actions');
-    historyPanel.innerHTML = '';
-    historyPanel.appendChild(header);
-    historyPanel.appendChild(actions);
-
-    // If no history, show a message
-    if (!history || history.length === 0) {
-        historyPanel.appendChild(document.createElement('div')).innerHTML =
-            '<div style="text-align: center; margin-top: 20px; color: #888;">No chat history available</div>';
-        return;
-    }
-
-    // Group conversations by date
-    const conversationsByDate = {};
-
-    history.forEach((item, index) => {
-        if (index % 2 === 0 && index + 1 < history.length) { // User message with a response
-            const userMessage = item.parts[0].text;
-            const botMessage = history[index + 1].parts[0].text;
-            const timestamp = item.timestamp || new Date().toISOString();
-            const date = new Date(timestamp).toLocaleDateString();
-
-            if (!conversationsByDate[date]) {
-                conversationsByDate[date] = [];
-            }
-
-            conversationsByDate[date].push({
-                userMessage,
-                botMessage,
-                timestamp
-            });
-        }
-    });
-
-    // Add conversation groups to the panel
-    Object.keys(conversationsByDate).sort().reverse().forEach(date => {
-        const dateHeader = document.createElement('div');
-        dateHeader.className = 'history-date-header';
-        dateHeader.textContent = date;
-        historyPanel.appendChild(dateHeader);
-
-        conversationsByDate[date].forEach(conv => {
-            const historyItem = document.createElement('div');
-            historyItem.className = 'history-item';
-            historyItem.innerHTML = `
-                <div class="history-item-title">${conv.userMessage.substring(0, 30)}${conv.userMessage.length > 30 ? '...' : ''}</div>
-                <div class="history-item-content">${conv.botMessage.substring(0, 100)}${conv.botMessage.length > 100 ? '...' : ''}</div>
-                <div class="history-item-time">${new Date(conv.timestamp).toLocaleTimeString()}</div>
-            `;
-            historyItem.addEventListener('click', () => {
-                document.getElementById('userInput').value = conv.userMessage;
-                toggleHistory();
-            });
-            historyPanel.appendChild(historyItem);
-        });
-    });
-}
-
 async function getAIResponse(prompt) {
     try {
-        // Get session ID and chat history
-        const sessionId = getSessionId();
-        const chatHistory = getChatHistory();
-
         const response = await fetch('/api/chat', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                prompt,
-                sessionId,
-                chatHistory
-            }),
+            body: JSON.stringify({ prompt }),
         });
-
         const data = await response.json();
-
-        // Extract bot response
-        const botResponse = data?.message?.response?.candidates?.[0]?.content?.parts?.[0]?.text
+        const botResponse = data?.message?.response?.candidates?.[0]?.content?.parts?.[0]?.text 
             || "Sorry, I couldn't process that. Could you ask differently?";
-
-        // Update chat history if provided in the response
-        if (data.chatHistory) {
-            // Add timestamps to messages
-            const updatedHistory = data.chatHistory.map(item => ({
-                ...item,
-                timestamp: item.timestamp || new Date().toISOString()
-            }));
-            saveChatHistory(updatedHistory);
-        }
-
         return botResponse;
     } catch (error) {
         return `Error: ${error.message}`;
@@ -1322,48 +1185,11 @@ async function getAIResponse(prompt) {
 
     function toggleHistory() {
         const panel = document.getElementById('historyPanel');
-        if (panel.style.display === 'none') {
-            // Initialize history panel with current chat history
-            updateHistoryPanel(getChatHistory());
-            panel.style.display = 'flex';
-        } else {
-            panel.style.display = 'none';
-        }
+        panel.style.display = panel.style.display === 'none' ? 'flex' : 'none';
     }
 
-    // Initialize the application
-    function initializeApp() {
-        typeWriter();
-        createParticles();
-
-        // Check if there's existing chat history
-        const chatHistory = getChatHistory();
-        if (chatHistory && chatHistory.length > 0) {
-            // Show the history icon if there's chat history
-            document.querySelector('.history-icon').style.display = 'flex';
-        }
-    }
-
-    // Clear chat history
-    function clearChatHistory() {
-        if (confirm('Are you sure you want to clear your chat history? This action cannot be undone.')) {
-            localStorage.removeItem('sakha_chat_history');
-            const historyPanel = document.getElementById('historyPanel');
-            const header = historyPanel.querySelector('.history-panel-header');
-            const actions = historyPanel.querySelector('.history-actions');
-            historyPanel.innerHTML = '';
-            historyPanel.appendChild(header);
-            historyPanel.appendChild(actions);
-            historyPanel.appendChild(document.createElement('div')).innerHTML =
-                '<div style="text-align: center; margin-top: 20px; color: #888;">No chat history available</div>';
-
-            // Hide history icon if visible
-            document.querySelector('.history-icon').style.display = 'none';
-        }
-    }
-
-    // Run initialization
-    initializeApp();
+    typeWriter();
+    createParticles();
 
     document.getElementById('userInput').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
