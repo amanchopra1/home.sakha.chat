@@ -89,13 +89,18 @@ export async function POST(req) {
 
     // Initialize the Gemini model with generation configurations
     const model = genAI.getGenerativeModel({
-      model: "tunedModels/sakha-i8ehrirsufxc",
-      generationConfig: {
-       systemInstruction: SPIRITUAL_INSTRUCTIONS,
-        temperature: 0.3,
-        topP: 0.95,
-        topK: 64,
-        maxOutputTokens: 8192,
+   model: "tunedModels/sakha-i8ehrirsufxc",
+  generationConfig: {
+    systemInstruction: SPIRITUAL_INSTRUCTIONS,
+    prefixMessages: [
+      { role: "user",  content: "hi" },
+      { role: "model", content: "Hare Krishna! I am Sakha, your spiritual guide. How may I assist you on your path today?" }
+    ],
+    temperature: 0.2,
+    topP: 0.6,
+    topK: 20,
+    repetitionPenalty: 1.2,
+    maxOutputTokens: 8192,
       },
     });
 
