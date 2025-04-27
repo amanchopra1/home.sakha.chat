@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="navbar.css">
   <title>3D Mala with Progress Bar and 360-degree Rotation</title>
   <style>
     *{
@@ -233,26 +234,8 @@
         margin-left: 23px;
       }
 
-      .navigation {
-        display: flex;
-        justify-content: space-around;
-        padding: 10px 0;
-        background: rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(10px);
-        border-radius: 20px 20px 0 0;
-        box-shadow: 0 -8px 15px var(--shadow-color);
-        transition: all 0.3s ease;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 1001
-      }
+      /* Navigation styles moved to navbar.css */
 
-
-
-      /* ... (previous styles remain the same) ... */
-      
       .dark-mode-toggle {
         position: fixed;
         bottom: 15vh;
@@ -264,56 +247,14 @@
         cursor: pointer;
         transition: background-color 0.3s ease;
       }
-      
+
       .dark-mode-toggle:hover {
         background-color: #E17D15;
       }
-      
+
       .dark-mode-toggle i {
         color: #fff;
         font-size: 20px;
-      }
-      
-      .navigation {
-        display: flex;
-        justify-content: space-around;
-        padding: 10px 0;
-        background: rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(10px);
-        border-radius: 20px 20px 0 0;
-        box-shadow: 0 -8px 15px var(--shadow-color);
-        transition: background-color 0.3s ease, color 0.3s ease;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 1001;
-      }
-      
-      .nav-item {
-        text-decoration: none;
-        color: var(--text-color);
-        font-size: 0.8rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        transition: all 0.3s ease;
-      }
-      
-      .nav-item:hover {
-        color: #FF8C00;
-        transform: translateY(-3px);
-      }
-            .nav-active {
-        color: #FF8C00;
-        
-        transform: translateY(-3px);
-      }
-      
-      .nav-item i {
-        font-size: 1.2rem;
-        margin-bottom: 3px;
-        transition: color 0.3s ease;
       }
   </style>
 </head>
@@ -324,7 +265,7 @@
     <h3 id="heading">जय श्रीकृष्णचैतन्य प्रभु नित्यानंद । <br>श्री अद्वैत गदाधर श्रीवासादि गौर भक्तवृंद ॥</h3>
     <button id="startButton">Start</button>
 
-    
+
     <div class="celebrate-message" id="celebrate-message"></div>
 
 
@@ -342,15 +283,14 @@
     <button id="muteButton" onclick="toggleMute()">
       <i id="muteIcon" class="fas fa-volume-up"></i>
     </button>
-    
-    
+
+
     <button id="darkModeToggle" class="dark-mode-toggle">
       <i id="darkModeIcon" class="fas fa-sun"></i>
     </button>
   </div>
-  
-  <nav class="navigation"><a href="https://home.sakha.chat" class="nav-item"><i class="fas fa-home"></i><span>Home</span></a><a href="https://vedic.sakha.chat" class="nav-item"><i class="fas fa-book"></i><span>Books</span></a><a href="https://home.sakha.chat/mala" class="nav-active nav-item"><i class="fas fa-om"></i><span>Chanting</span></a><a href="https://gita.sakha.chat" class="nav-item"><i class="fas fa-leaf"></i><span>Remedies</span></a>
-    <a href="https://rzp.io/l/sakha" class="nav-item"><i class="fas fa-hand-holding-heart"></i><span>contribute</span></a></nav>
+
+  <div id="navbar-container"></div>
       <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
@@ -544,7 +484,7 @@ celebrate();
     function stopSpinning() {
       isSpinning = false;
       clearTimeout(spinTimeout);
-      
+
     }
 
     document.getElementById('startButton').addEventListener('click', toggleSpinning);
@@ -593,32 +533,32 @@ darkModeToggle.addEventListener('click', () => {
   }
 });
     animate();
-    
-            
-    
+
+
+
             // Celebration function triggered on button click
             function celebrate() {
               // Play celebration sound
-              
-    
+
+
               // Show the celebration message with fade-in animation
               const message = document.getElementById('celebrate-message');
               message.style.opacity = '1';
-    
+
               // Start confetti animation
               confetti({
                 particleCount: 150,
                 spread: 70,
                 origin: { y: 0.6 }
               });
-    
+
               confetti({
                 particleCount: 100,
                 spread: 120,
                 origin: { x: 0.8, y: 0.6 },
                 colors: ['#FFC107', '#FF5722', '#4CAF50', '#2196F3']
               });
-    
+
               confetti({
                 particleCount: 100,
                 spread: 120,
@@ -626,8 +566,8 @@ darkModeToggle.addEventListener('click', () => {
                 colors: ['#FFC107', '#FF5722', '#4CAF50', '#2196F3']
               });
             }
-    
-    
+
+
   </script>
   <button id="backButton" style="position: absolute; top: 2.3vh; left: 7px; background-color: white; color: orange; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 30px; cursor: pointer; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); z-index: 1000;">
   <i class="fas fa-arrow-left"></i>
@@ -638,7 +578,8 @@ darkModeToggle.addEventListener('click', () => {
     window.location.href = 'https://home.sakha.chat';
   });
 </script>
-  
+
+  <script src="navbar.js"></script>
 </body>
 
   </html>
