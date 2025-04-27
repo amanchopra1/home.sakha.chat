@@ -1083,6 +1083,11 @@
         font-size: 1.2rem; /* Reduced welcome message size */
       }
 
+      .bhagwat-geeta-box {
+        margin-top: 15px;
+        margin-bottom: 15px;
+      }
+
       .topic-bullet {
         font-size: 0.85rem; /* Reduced topic bullet size */
         padding: 6px 14px;
@@ -1128,6 +1133,102 @@
         right: 20px;
       }
     }
+
+    /* Bhagwat Geeta Box Styles */
+    .bhagwat-geeta-box {
+      background: linear-gradient(135deg, #ff5622, #ffc107);
+
+
+
+      border-radius: 15px;
+      padding: 20px;
+      margin: 0 auto 25px auto;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      position: relative;
+
+      transition: all 0.3s ease;
+      width: 100%;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 300px;
+
+
+    }
+
+    .bhagwat-geeta-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .bhagwat-geeta-box::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+      transform: rotate(30deg);
+      z-index: 1;
+    }
+
+    .bhagwat-geeta-title {
+      color: white;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .bhagwat-geeta-subtitle {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 1rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .bhagwat-geeta-icon {
+      font-size: 2rem;
+      color: white;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Mobile Bhagwat Geeta Box */
+    .mobile-bhagwat-box {
+      height: 150px;
+      margin-bottom: 20px;
+    }
+
+    @media (min-width: 1024px) {
+      .mobile-bhagwat-box {
+        display: none; /* Hide mobile box on desktop */
+      }
+
+      .bhagwat-geeta-box {
+        padding: 25px;
+        margin: 5px 0 30px 0;
+        height: 150px;
+      }
+
+      .bhagwat-geeta-title {
+        font-size: 1.8rem;
+      }
+
+      .bhagwat-geeta-subtitle {
+        font-size: 1.2rem;
+      }
+
+      .bhagwat-geeta-icon {
+        font-size: 2.5rem;
+      }
+    }
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="navbar.css">
@@ -1145,6 +1246,9 @@
   </header>
 
   <div class="container" id="appContainer">
+    <!-- Bhagwat Geeta Box (visible on both mobile and desktop) -->
+    
+
     <!-- Main chat container -->
     <div class="chat-container" id="chatContainer">
       <div class="chat-header">
@@ -1168,6 +1272,8 @@
         <div class="topic-bullet" onclick="selectTopic('Spirituality')">Spirituality</div>
         <div class="topic-bullet" onclick="selectTopic('Meditation')">Meditation</div>
       </div>
+
+
       <div class="chat-input-container">
         <div class="typing-indicator" id="typingIndicator">
           <div class="dot"></div>
@@ -1180,9 +1286,21 @@
         </div>
       </div>
     </div>
+    <div class="bhagwat-geeta-box mobile-bhagwat-box" onclick="openBhagwatGeeta()">
+      <div class="bhagwat-geeta-icon"><i class="fas fa-book-open"></i></div>
+      <div class="bhagwat-geeta-title">Chat with Bhagwat Geeta</div>
+      <div class="bhagwat-geeta-subtitle">Discover timeless wisdom from the sacred text</div>
+    </div>
 
     <!-- Side content container for desktop layout -->
     <div id="sideContent">
+      <!-- Bhagwat Geeta Box -->
+      <div class="bhagwat-geeta-box" onclick="openBhagwatGeeta()">
+        <div class="bhagwat-geeta-icon"><i class="fas fa-book-open"></i></div>
+        <div class="bhagwat-geeta-title">Chat with Bhagwat Geeta</div>
+        <div class="bhagwat-geeta-subtitle">Discover timeless wisdom from the sacred text</div>
+      </div>
+
       <div class="activity-section">
         <h2>Your Spiritual Journey</h2>
         <div class="activity-cards">
@@ -1404,6 +1522,13 @@ async function getAIResponse(prompt) {
             document.querySelector('.activity-section').style.display = 'none';
             document.querySelector('.info-section').style.display = 'none';
             document.getElementById('topics').style.display = 'none';
+            // Hide both mobile and desktop Bhagwat Geeta boxes
+            if (document.querySelector('#sideContent .bhagwat-geeta-box')) {
+                document.querySelector('#sideContent .bhagwat-geeta-box').style.display = 'none';
+            }
+            if (document.querySelector('.mobile-bhagwat-box')) {
+                document.querySelector('.mobile-bhagwat-box').style.display = 'none';
+            }
             notificationIcon.style.display = 'none';
             historyIcon.style.display = 'flex';
 
@@ -1551,6 +1676,9 @@ async function getAIResponse(prompt) {
         activitySection.style.display = 'block';
         infoSection.style.display = 'block';
         topics.style.display = 'flex';
+        if (document.querySelector('#sideContent .bhagwat-geeta-box')) {
+            document.querySelector('#sideContent .bhagwat-geeta-box').style.display = 'block';
+        }
         document.querySelector('.navigation').style.display = 'flex';
         chatHeaderText.textContent = 'Hare Krishna Devotee';
         notificationIcon.style.display = 'flex';
@@ -1594,6 +1722,10 @@ async function getAIResponse(prompt) {
     function updateNavigationVisibility() {
         const navigation = document.querySelector('.navigation');
         navigation.style.display = 'flex';
+    }
+
+    function openBhagwatGeeta() {
+        window.open('https://bhagwat-geeta-rag-git-master-gptrepos-projects.vercel.app/');
     }
 </script>
   <script src="navbar.js"></script>
